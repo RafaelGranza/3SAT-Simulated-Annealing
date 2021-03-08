@@ -3,6 +3,19 @@ import math
 import copy 
 from state import State
 
+def random_gen(initial_state):
+    """Peforms random to find a solution"""
+    loops = 10000
+
+    solution = initial_state
+
+    for i in range(loops):
+        neighbor = get_random_neighbor(solution, 50)
+        cost_diff =  get_cost(neighbor) - get_cost(solution)
+        if cost_diff > 0:
+                solution = neighbor
+
+    return solution
 
 def simulated_annealing(initial_state):
     """Peforms simulated annealing to find a solution"""
