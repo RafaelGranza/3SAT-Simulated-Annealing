@@ -6,7 +6,7 @@ from state import State
 
 def simulated_annealing(initial_state):
     """Peforms simulated annealing to find a solution"""
-    initial_temp = 10
+    initial_temp = 100
     final_temp = .1
     loops = 100
 
@@ -33,11 +33,11 @@ def simulated_annealing(initial_state):
 
 def get_prob(cost, temp):
     """Generate probability"""
-    return math.exp(-cost/temp)
+    return temp/90
 
 def get_new_temperature(temp):
     """Decrement the temperature"""
-    return temp - 0.01
+    return temp * 0.98
 
 def get_cost(state):
     """Calculates cost of the argument state for your solution."""
