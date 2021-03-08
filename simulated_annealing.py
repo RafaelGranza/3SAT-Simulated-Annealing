@@ -1,12 +1,13 @@
 import random
 import math
+import copy 
 from state import State
 
 
 def simulated_annealing(initial_state):
     """Peforms simulated annealing to find a solution"""
-    initial_temp = 90
-    final_temp = .001
+    initial_temp = 10
+    final_temp = .1
     loops = 100
 
     current_temp = initial_temp
@@ -18,15 +19,15 @@ def simulated_annealing(initial_state):
         for i in range(loops):
             neighbor = get_random_neighbor(current_state, current_temp)
             cost_diff = get_cost(current_state) - get_cost(neighbor)
-            
             if cost_diff > 0:
                 solution = neighbor
             else:
                 if random.uniform(0, 1) < get_prob(cost_diff, current_temp):
                     solution = neighbor
+            current_state = solution
 
         current_temp = get_new_temperature(current_temp)
-        print(get_cost(current_state), current_temp)
+        print(get_cost(solution), current_temp)
 
     return solution
 
@@ -36,7 +37,7 @@ def get_prob(cost, temp):
 
 def get_new_temperature(temp):
     """Decrement the temperature"""
-    return temp * 0.95
+    return temp - 0.01
 
 def get_cost(state):
     """Calculates cost of the argument state for your solution."""
@@ -52,9 +53,11 @@ def get_cost(state):
         points -= v
     return points
 
-def get_random_neighbor(state, temp):
+def get_random_neighbor(state_a, temp):
     """Returns neighbors of the argument state for your solution."""
     flag = False
+    state = copy.deepcopy(state_a)
+    
     for key, v in state.variables.items():
         if random.uniform(0, 1) < temp/100:
             state.variables[key] = not v
