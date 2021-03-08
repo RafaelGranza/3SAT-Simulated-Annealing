@@ -6,8 +6,8 @@ from state import State
 def simulated_annealing(initial_state):
     """Peforms simulated annealing to find a solution"""
     initial_temp = 90
-    final_temp = .1
-    loops = 1000
+    final_temp = .001
+    loops = 100
 
     current_temp = initial_temp
 
@@ -26,30 +26,30 @@ def simulated_annealing(initial_state):
                     solution = neighbor
 
         current_temp = get_new_temperature(current_temp)
-        # print(get_cost(current_state), current_temp)
+        print(get_cost(current_state), current_temp)
 
     return solution
 
 def get_prob(cost, temp):
     """Generate probability"""
-    return math.exp(-cost / temp)
+    return math.exp(-cost/temp)
 
 def get_new_temperature(temp):
     """Decrement the temperature"""
-    return temp - 0.80
+    return temp * 0.95
 
 def get_cost(state):
     """Calculates cost of the argument state for your solution."""
-    points = 0
+    points = len(state.statements)
 
     for stt in state.statements:
-        true = True
+        v = True
         for var in stt:
             if var[1]:
-                true &= state.variables[var[0]]
+                v &= state.variables[var[0]]
             else:
-                true &= not state.variables[var[0]]
-        points += true
+                v &= not state.variables[var[0]]
+        points -= v
     return points
 
 def get_random_neighbor(state, temp):
