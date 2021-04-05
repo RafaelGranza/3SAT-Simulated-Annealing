@@ -60,9 +60,9 @@ def get_cost(state):
         v = True
         for var in stt:
             if var[1]:
-                v &= state.variables[var[0]]
+                v |= state.variables[var[0]]
             else:
-                v &= not state.variables[var[0]]
+                v |= not state.variables[var[0]]
         points += v
     return points*3
 
